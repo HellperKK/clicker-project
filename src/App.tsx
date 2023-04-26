@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./store";
 import { changeByAmount } from "./moneySlice";
 import { buyBuilding } from "./buildingSlice";
-import HideElement from "./utils/hideElement";
+import HideElement from "./utils/HideElement";
 
 function App() {
   const money = useSelector((state: RootState) => state.money.value);
