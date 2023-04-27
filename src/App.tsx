@@ -10,6 +10,7 @@ import { RootState } from "./store";
 import { changeByAmount } from "./moneySlice";
 import { buyBuilding } from "./buildingSlice";
 import HideElement from "./utils/HideElement";
+import burger from "./assets/burger.png";
 
 function App() {
   const money = useSelector((state: RootState) => state.money.value);
@@ -38,18 +39,18 @@ function App() {
   return (
     <>
       <div className="columns">
-        <div className="column is-one-quarter"></div>
-        <div className="column has-text-centered">
-          <p>
+        <div className="column is-one-quarter">
+          <p className="is-size-1">
             Monney : {display.format(money)} (+
             {display.format(buildingsGain(buildings))}/s)
           </p>
           <button
-            className="button"
+            className="transparent-button"
             onClick={() => dispatch(changeByAmount(1))}
           >
-            Click
+            <img src={burger} alt="Click me!" />
           </button>
+          <br />
           <button
             className="button"
             onClick={() => dispatch(changeByAmount(1_000_000_000))}
@@ -57,11 +58,7 @@ function App() {
             Cheat
           </button>
         </div>
-        <div className="column is-one-quarter"></div>
-      </div>
-      <div className="columns">
-        <div className="column is-one-quarter"></div>
-        <div className="column">
+        <div className="column has-text-centered">
           {buildings.map((building) => {
             const truePrice = buildingTruePrice(building);
             return (
@@ -84,6 +81,11 @@ function App() {
             );
           })}
         </div>
+        <div className="column is-one-quarter"></div>
+      </div>
+      <div className="columns">
+        <div className="column is-one-quarter"></div>
+        <div className="column"></div>
         <div className="column is-one-quarter"></div>
       </div>
     </>
