@@ -42,6 +42,6 @@ export const BUILDINGS: Array<Building> = [
   new Building("Palm", "Many fingers at the same time.", 200, 5),
   new Building("Fist", "A stronger hand by punching.", 3000, 25),
   new Building("Chest", "To press with the whole body.", 50_000, 200),
-  new Building("Hammer", "A handya nd strong tool", 1_000_000, 1000),
+  new Building("Hammer", "A handy and strong tool", 1_000_000, 1000),
   new Building("Mass", "A heavier tool for more strenght.", 15_000_000, 5000),
 ];
