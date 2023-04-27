@@ -3,5 +3,9 @@
 #root {
   width: 100vw;
   height: 100vh;
-  margin: 0 auto;
+  padding: 0 4px;
+}
+
+.max-width {
+  width: 100%;
 }

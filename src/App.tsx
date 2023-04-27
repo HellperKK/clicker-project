@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import "./App.css";
 import {
   buildingShowValue,
@@ -18,20 +18,31 @@ function App() {
   );
   const dispatch = useDispatch();
 
+  const display = useMemo(
+    () =>
+      new Intl.NumberFormat("en-GB", {
+        notation: "compact",
+        compactDisplay: "short",
+      }),
+    []
+  );
+
   useEffect(() => {
     const interval = setInterval(() => {
       const reward = buildingsGain(buildings);
-      dispatch(changeByAmount(reward));
-    }, 1000);
+      dispatch(changeByAmount(reward / 10));
+    }, 100);
     return () => clearInterval(interval);
   }, [buildings, dispatch]);
 
   return (
     <>
       <div className="columns">
-        <div className="column is-one-quarter">
+        <div className="column is-one-quarter"></div>
+        <div className="column has-text-centered">
           <p>
-            Monney : {money} (+{buildingsGain(buildings)}/s)
+            Monney : {display.format(money)} (+
+            {display.format(buildingsGain(buildings))}/s)
           </p>
           <button
             className="button"
@@ -39,28 +50,39 @@ function App() {
           >
             Click
           </button>
+          <button
+            className="button"
+            onClick={() => dispatch(changeByAmount(1_000_000_000))}
+          >
+            Cheat
+          </button>
         </div>
+        <div className="column is-one-quarter"></div>
+      </div>
+      <div className="columns">
+        <div className="column is-one-quarter"></div>
         <div className="column">
-          {buildings.map((building) => (
-            <div key={building.id}>
-              <HideElement minimalShow={buildingShowValue(building)}>
-                <button
-                  className="button"
-                  title={building.desc}
-                  disabled={money < buildingTruePrice(building)}
-                  onClick={() => {
-                    dispatch(
-                      changeByAmount(Math.ceil(-buildingTruePrice(building)))
-                    );
-                    dispatch(buyBuilding(building));
-                  }}
-                >
-                  {building.name}(+{building.moneyGain}/s){" "}
-                  {buildingTruePrice(building)}
-                </button>
-              </HideElement>
-            </div>
-          ))}
+          {buildings.map((building) => {
+            const truePrice = buildingTruePrice(building);
+            return (
+              <div key={building.id}>
+                <HideElement minimalShow={buildingShowValue(building)}>
+                  <button
+                    className="button max-width"
+                    title={building.desc}
+                    disabled={money < truePrice}
+                    onClick={() => {
+                      dispatch(changeByAmount(Math.ceil(-truePrice)));
+                      dispatch(buyBuilding(building));
+                    }}
+                  >
+                    {building.name}(+{building.moneyGain}/s){" "}
+                    {display.format(truePrice)}
+                  </button>
+                </HideElement>
+              </div>
+            );
+          })}
         </div>
         <div className="column is-one-quarter"></div>
       </div>
