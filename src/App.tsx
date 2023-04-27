@@ -41,7 +41,7 @@ function App() {
       <div className="columns">
         <div className="column is-one-quarter">
           <p className="is-size-1">
-            Monney : {display.format(money)} (+
+            Money : {display.format(money)} (+
             {display.format(buildingsGain(buildings))}/s)
           </p>
           <button
