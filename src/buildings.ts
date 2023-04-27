@@ -49,9 +49,25 @@ export const BUILDINGS: Array<Building> = [
   {
     id: 4,
     name: "Chest",
-    desc: "Press it with your whole body.",
-    basePrice: 50000,
+    desc: "To press with the whole body.",
+    basePrice: 50_000,
     quantity: 0,
     moneyGain: 200,
+  },
+  {
+    id: 5,
+    name: "Hammer",
+    desc: "When the need for tools start to rise.",
+    basePrice: 1_000_000,
+    quantity: 0,
+    moneyGain: 1000,
+  },
+  {
+    id: 6,
+    name: "Mass",
+    desc: "A heavier tool for more strenght.",
+    basePrice: 15_000_000,
+    quantity: 0,
+    moneyGain: 5000,
   },
 ];
