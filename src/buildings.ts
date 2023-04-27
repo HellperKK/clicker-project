@@ -47,7 +47,7 @@ export const BUILDINGS: Array<Building> = [
     moneyGain: 25,
   },
   {
-    id: 3,
+    id: 4,
     name: "Chest",
     desc: "Press it with your whole body.",
     basePrice: 50000,
