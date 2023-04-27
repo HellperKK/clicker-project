@@ -1,10 +1,6 @@
 import { useEffect, useMemo } from "react";
 import "./App.css";
-import {
-  buildingShowValue,
-  buildingTruePrice,
-  buildingsGain,
-} from "./buildings";
+import { buildingsGain } from "./buildings";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./store";
 import { changeByAmount } from "./moneySlice";
@@ -60,10 +56,10 @@ function App() {
         </div>
         <div className="column">
           {buildings.map((building) => {
-            const truePrice = buildingTruePrice(building);
+            const truePrice = building.TruePrice();
             return (
               <div key={building.id}>
-                <HideElement minimalShow={buildingShowValue(building)}>
+                <HideElement minimalShow={building.ShowValue()}>
                   <button
                     className="button max-width is-size-4"
                     title={`${building.desc} (${building.moneyGain}/s)`}
