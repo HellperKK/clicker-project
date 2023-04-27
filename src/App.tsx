@@ -39,7 +39,7 @@ function App() {
   return (
     <>
       <div className="columns">
-        <div className="column is-one-quarter">
+        <div className="column is-two-fifths  has-text-centered">
           <p className="is-size-1">
             Money : {display.format(money)} (+
             {display.format(buildingsGain(buildings))}/s)
@@ -58,22 +58,22 @@ function App() {
             Cheat
           </button>
         </div>
-        <div className="column has-text-centered">
+        <div className="column">
           {buildings.map((building) => {
             const truePrice = buildingTruePrice(building);
             return (
               <div key={building.id}>
                 <HideElement minimalShow={buildingShowValue(building)}>
                   <button
-                    className="button max-width"
-                    title={building.desc}
+                    className="button max-width is-size-4"
+                    title={`${building.desc} (${building.moneyGain}/s)`}
                     disabled={money < truePrice}
                     onClick={() => {
                       dispatch(changeByAmount(Math.ceil(-truePrice)));
                       dispatch(buyBuilding(building));
                     }}
                   >
-                    {building.name}(+{building.moneyGain}/s){" "}
+                    {building.name} ({building.quantity}){" "}
                     {display.format(truePrice)}
                   </button>
                 </HideElement>
@@ -81,7 +81,6 @@ function App() {
             );
           })}
         </div>
-        <div className="column is-one-quarter"></div>
       </div>
       <div className="columns">
         <div className="column is-one-quarter"></div>
