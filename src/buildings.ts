@@ -7,14 +7,18 @@ export interface Building {
   moneyGain: number;
 }
 
-export function calculateBuildingPrice(building: Building) {
+export function buildingTruePrice(building: Building) {
   return Math.ceil(building.basePrice * 1.1 ** building.quantity);
 }
 
-export function calculateBuildingReward(buildings: Array<Building>) {
+export function buildingsGain(buildings: Array<Building>) {
   return buildings.reduce((memo, building) => {
     return memo + building.moneyGain * building.quantity;
   }, 0);
+}
+
+export function buildingShowValue(building: Building) {
+  return building.basePrice * 0.5;
 }
 
 export const BUILDINGS: Array<Building> = [
@@ -40,6 +44,14 @@ export const BUILDINGS: Array<Building> = [
     desc: "A stronger hand by punching.",
     basePrice: 3000,
     quantity: 0,
-    moneyGain: 24,
+    moneyGain: 25,
+  },
+  {
+    id: 3,
+    name: "Chest",
+    desc: "Press it with your whole body.",
+    basePrice: 50000,
+    quantity: 0,
+    moneyGain: 200,
   },
 ];

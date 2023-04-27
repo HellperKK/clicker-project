@@ -1,6 +1,10 @@
 import { useEffect } from "react";
 import "./App.css";
-import { calculateBuildingPrice, calculateBuildingReward } from "./buildings";
+import {
+  buildingShowValue,
+  buildingTruePrice,
+  buildingsGain,
+} from "./buildings";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./store";
 import { changeByAmount } from "./moneySlice";
@@ -16,18 +20,18 @@ function App() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const reward = calculateBuildingReward(buildings);
+      const reward = buildingsGain(buildings);
       dispatch(changeByAmount(reward));
     }, 1000);
     return () => clearInterval(interval);
-  }, [buildings]);
+  }, [buildings, dispatch]);
 
   return (
     <>
       <div className="columns">
         <div className="column is-one-quarter">
           <p>
-            Monney : {money} (+{calculateBuildingReward(buildings)}/s)
+            Monney : {money} (+{buildingsGain(buildings)}/s)
           </p>
           <button
             className="button"
@@ -39,22 +43,20 @@ function App() {
         <div className="column">
           {buildings.map((building) => (
             <div key={building.id}>
-              <HideElement minimalShow={building.basePrice * 0.75}>
+              <HideElement minimalShow={buildingShowValue(building)}>
                 <button
                   className="button"
                   title={building.desc}
-                  disabled={money < calculateBuildingPrice(building)}
+                  disabled={money < buildingTruePrice(building)}
                   onClick={() => {
                     dispatch(
-                      changeByAmount(
-                        Math.ceil(-calculateBuildingPrice(building))
-                      )
+                      changeByAmount(Math.ceil(-buildingTruePrice(building)))
                     );
                     dispatch(buyBuilding(building));
                   }}
                 >
                   {building.name}(+{building.moneyGain}/s){" "}
-                  {calculateBuildingPrice(building)}
+                  {buildingTruePrice(building)}
                 </button>
               </HideElement>
             </div>
