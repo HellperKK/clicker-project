@@ -16,7 +16,7 @@ function HideElement(props: Props) {
     setVisible(true);
   }
 
-  return <div>{visible && props.children}</div>;
+  return <>{visible && props.children}</>;
 }
 
 export default HideElement;
