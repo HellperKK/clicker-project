@@ -16,10 +16,16 @@ export const moneySlice = createSlice({
     changeByAmount: (state, action: PayloadAction<number>) => {
       state.value += action.payload;
     },
+    setMoney: (state, action: PayloadAction<number>) => {
+      state.value = action.payload;
+    },
+    resetMoney: (state) => {
+      state.value = 0;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { changeByAmount } = moneySlice.actions;
+export const { changeByAmount, setMoney, resetMoney } = moneySlice.actions;
 
 export default moneySlice.reducer;

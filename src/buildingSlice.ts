@@ -32,10 +32,17 @@ export const buildingsSlice = createSlice({
         state.buildings[index].quantity--;
       }
     },
+    setBuildings: (state, action: PayloadAction<Array<Building>>) => {
+      state.buildings = action.payload;
+    },
+    resetBuildings: (state) => {
+      state.buildings = BUILDINGS;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { buyBuilding, sellBuilding } = buildingsSlice.actions;
+export const { buyBuilding, sellBuilding, setBuildings, resetBuildings } =
+  buildingsSlice.actions;
 
 export default buildingsSlice.reducer;

@@ -1,6 +1,10 @@
 import { useEffect, useMemo } from "react";
 import "./App.css";
-import { buildingsGain } from "./buildings";
+import {
+  buildingShowingValue,
+  buildingTruePrice,
+  buildingsGain,
+} from "./buildings";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./store";
 import { changeByAmount } from "./moneySlice";
@@ -35,7 +39,7 @@ function App() {
   return (
     <>
       <div className="columns">
-        <div className="column is-two-fifths  has-text-centered">
+        <div className="column is-one-third  has-text-centered">
           <p className="is-size-1">
             Money : {display.format(money)} (+
             {display.format(buildingsGain(buildings))}/s)
@@ -55,11 +59,14 @@ function App() {
           </button>
         </div>
         <div className="column">
+          <div className="columns">
+            <div className="column"></div>
+          </div>
           {buildings.map((building) => {
-            const truePrice = building.truePrice();
+            const truePrice = buildingTruePrice(building);
             return (
               <div key={building.id}>
-                <HideElement minimalShow={building.showingPrice()}>
+                <HideElement minimalShow={buildingShowingValue(building)}>
                   <button
                     className="button max-width is-size-4"
                     title={`${building.desc} (${building.moneyGain}/s)`}
