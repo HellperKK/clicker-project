@@ -56,10 +56,10 @@ function App() {
         </div>
         <div className="column">
           {buildings.map((building) => {
-            const truePrice = building.TruePrice();
+            const truePrice = building.truePrice();
             return (
               <div key={building.id}>
-                <HideElement minimalShow={building.ShowValue()}>
+                <HideElement minimalShow={building.showingPrice()}>
                   <button
                     className="button max-width is-size-4"
                     title={`${building.desc} (${building.moneyGain}/s)`}

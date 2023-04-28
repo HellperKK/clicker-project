@@ -22,11 +22,11 @@ export class Building {
     this.moneyGain = moneyGain;
   }
 
-  TruePrice() {
+  truePrice() {
     return Math.ceil(this.basePrice * 1.1 ** this.quantity);
   }
 
-  ShowValue() {
+  showingPrice() {
     return this.basePrice * 0.5;
   }
 }
