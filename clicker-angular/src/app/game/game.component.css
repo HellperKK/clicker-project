@@ -1,0 +1,9 @@
+.max-width {
+  width: 100%;
+}
+
+.transparent-button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}

@@ -1,0 +1,33 @@
+<div class="columns">
+  <div class="column is-one-third has-text-centered">
+    <p class="is-size-1">
+      Money : {{ money$ | async | formatNumber }} (+{{ buildingsGain }}/s)
+      <!--{{ formatNumber(buildingsGain(store.getBuildings)) }}/s)-->
+    </p>
+    <button class="transparent-button" (click)="changeMoneyByAmount(1)">
+      <img :src="assets/burger.png" alt="Click me!" />
+    </button>
+    <br />
+    <button class="button" (click)="changeMoneyByAmount(1_000_000_000)">
+      Cheat
+    </button>
+  </div>
+  <div class="column">
+    <div class="columns">
+      <div class="column"></div>
+    </div>
+    <div *ngFor="let building of buildings$ | async" key="{building.id}">
+      <app-hidden-element [minimalShow]="buildingShowingValue(building)">
+        <button
+          class="button max-width is-size-4"
+          [title]="buildingTitle(building)"
+          [disabled]="money < buildingTruePrice(building)"
+          (click)="buyBuilding(building)"
+        >
+          {{ building.name }}({{ building.quantity }})
+          {{ buildingTruePrice(building) | formatNumber }}
+        </button>
+      </app-hidden-element>
+    </div>
+  </div>
+</div>

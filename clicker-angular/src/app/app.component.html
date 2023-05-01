@@ -1,0 +1,12 @@
+<div class="tabs">
+  <ul>
+    <li [class.is-active]="tabIndex === 0">
+      <a (click)="setTabIndex(0)">Game</a>
+    </li>
+    <li [class.is-active]="tabIndex === 1">
+      <a (click)="setTabIndex(1)">Options</a>
+    </li>
+  </ul>
+</div>
+<div [class.hidden]="tabIndex !== 0"><app-game /></div>
+<div [class.hidden]="tabIndex !== 1"><app-options /></div>
