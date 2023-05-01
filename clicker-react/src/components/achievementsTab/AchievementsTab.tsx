@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
-import { RootState } from "./store";
-import { ACHIEVEMENTS } from "./achievements";
+import { RootState } from "../../store/store";
+import { ACHIEVEMENTS } from "../../gameElements/achievements";
 // import "AchievementsTab.css";
-import GameState from "./Gamestate";
+import GameState from "../../Gamestate";
 
 function Achievements() {
   const money = useSelector((state: RootState) => state.money.value);

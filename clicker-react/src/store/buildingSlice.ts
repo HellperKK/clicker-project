@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { BUILDINGS, Building } from "./buildings";
+import { BUILDINGS, Building } from "../gameElements/buildings";
 
 export interface BuildingsState {
   buildings: Array<Building>;

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Game from "./Game";
-import Options from "./Options";
-import Achievements from "./AchievementsTab";
+import Game from "./components/game/Game";
+import Options from "./components/options/Options";
+import Achievements from "./components/achievementsTab/AchievementsTab";
 import "./App.css";
 
 function Navbar() {

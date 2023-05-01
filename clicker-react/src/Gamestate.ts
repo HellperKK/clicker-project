@@ -1,4 +1,4 @@
-import { Building } from "./buildings";
+import { Building } from "./gameElements/buildings";
 
 export default interface GameState {
   money: number;

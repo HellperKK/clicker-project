@@ -4,13 +4,13 @@ import {
   buildingShowingValue,
   buildingTruePrice,
   buildingsGain,
-} from "./buildings";
+} from "../../gameElements/buildings";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "./store";
-import { changeByAmount } from "./moneySlice";
-import { buyBuilding } from "./buildingSlice";
-import HideElement from "./utils/HideElement";
-import burger from "./assets/burger.png";
+import { RootState } from "../../store/store";
+import { changeByAmount } from "../../store/moneySlice";
+import { buyBuilding } from "../../store/buildingSlice";
+import HideElement from "../utils/HideElement";
+import burger from "../../assets/burger.png";
 
 function App() {
   const money = useSelector((state: RootState) => state.money.value);

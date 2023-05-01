@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { resetMoney, setMoney } from "./moneySlice";
-import { resetBuildings, setBuildings } from "./buildingSlice";
-import { RootState } from "./store";
-import { download, openFiles } from "./utils";
+import { resetMoney, setMoney } from "../../store/moneySlice";
+import { resetBuildings, setBuildings } from "../../store/buildingSlice";
+import { RootState } from "../../store/store";
+import { download, openFiles } from "../../utils";
 
 function Options() {
   const dispatch = useDispatch();
