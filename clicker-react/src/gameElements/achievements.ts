@@ -1,4 +1,4 @@
-import GameState from "./Gamestate";
+import GameState from "../Gamestate";
 
 export interface Achievement {
   id: number;

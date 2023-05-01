@@ -8,8 +8,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { changeByAmount } from "../../store/moneySlice";
-import { buyBuilding } from "../../store/buildingSlice";
-import HideElement from "../utils/HideElement";
+import { buyBuilding, unlockBuilding } from "../../store/buildingSlice";
 import burger from "../../assets/burger.png";
 
 function App() {
@@ -18,6 +17,12 @@ function App() {
     (state: RootState) => state.buildings.buildings
   );
   const dispatch = useDispatch();
+
+  buildings.forEach((building) => {
+    if (!building.isUnlocked && money >= buildingShowingValue(building)) {
+      dispatch(unlockBuilding(building));
+    }
+  });
 
   const display = useMemo(
     () =>
@@ -62,11 +67,12 @@ function App() {
           <div className="columns">
             <div className="column"></div>
           </div>
-          {buildings.map((building) => {
-            const truePrice = buildingTruePrice(building);
-            return (
-              <div key={building.id}>
-                <HideElement minimalShow={buildingShowingValue(building)}>
+          {buildings
+            .filter((building) => building.isUnlocked)
+            .map((building) => {
+              const truePrice = buildingTruePrice(building);
+              return (
+                <div key={building.id}>
                   <button
                     className="button max-width is-size-4"
                     title={`${building.desc} (${building.moneyGain}/s)`}
@@ -79,10 +85,9 @@ function App() {
                     {building.name} ({building.quantity}){" "}
                     {display.format(truePrice)}
                   </button>
-                </HideElement>
-              </div>
-            );
-          })}
+                </div>
+              );
+            })}
         </div>
       </div>
       <div className="columns">

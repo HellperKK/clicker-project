@@ -5,6 +5,7 @@ export interface Building {
   desc: string;
   basePrice: number;
   moneyGain: number;
+  isUnlocked: boolean;
 }
 
 export function buildingsGain(buildings: Array<Building>) {
@@ -29,6 +30,7 @@ export const BUILDINGS: Array<Building> = [
     basePrice: 10,
     quantity: 0,
     moneyGain: 1,
+    isUnlocked: false,
   },
   {
     id: 2,
@@ -37,6 +39,7 @@ export const BUILDINGS: Array<Building> = [
     basePrice: 200,
     quantity: 0,
     moneyGain: 5,
+    isUnlocked: false,
   },
   {
     id: 3,
@@ -45,6 +48,7 @@ export const BUILDINGS: Array<Building> = [
     basePrice: 3000,
     quantity: 0,
     moneyGain: 25,
+    isUnlocked: false,
   },
   {
     id: 4,
@@ -53,6 +57,7 @@ export const BUILDINGS: Array<Building> = [
     basePrice: 50_000,
     quantity: 0,
     moneyGain: 200,
+    isUnlocked: false,
   },
   {
     id: 5,
@@ -61,6 +66,7 @@ export const BUILDINGS: Array<Building> = [
     basePrice: 1_000_000,
     quantity: 0,
     moneyGain: 1000,
+    isUnlocked: false,
   },
   {
     id: 6,
@@ -69,5 +75,6 @@ export const BUILDINGS: Array<Building> = [
     basePrice: 15_000_000,
     quantity: 0,
     moneyGain: 5000,
+    isUnlocked: false,
   },
 ];

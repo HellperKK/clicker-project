@@ -23,6 +23,15 @@ export const buildingsSlice = createSlice({
         state.buildings[index].quantity++;
       }
     },
+    unlockBuilding: (state, action: PayloadAction<Building>) => {
+      const index = state.buildings.findIndex(
+        (building) => building.id === action.payload.id
+      );
+
+      if (index !== undefined) {
+        state.buildings[index].isUnlocked = true;
+      }
+    },
     sellBuilding: (state, action: PayloadAction<Building>) => {
       const index = state.buildings.findIndex(
         (building) => building.id === action.payload.id
@@ -42,7 +51,12 @@ export const buildingsSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { buyBuilding, sellBuilding, setBuildings, resetBuildings } =
-  buildingsSlice.actions;
+export const {
+  buyBuilding,
+  sellBuilding,
+  setBuildings,
+  resetBuildings,
+  unlockBuilding,
+} = buildingsSlice.actions;
 
 export default buildingsSlice.reducer;
