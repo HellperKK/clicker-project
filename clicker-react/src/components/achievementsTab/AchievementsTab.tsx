@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { ACHIEVEMENTS } from "../../gameElements/achievements";
 import GameState from "../../Gamestate";
+import "./AchievementsTab.css";
 
 function Achievements() {
   const money = useSelector((state: RootState) => state.money.value);
@@ -15,11 +16,11 @@ function Achievements() {
   };
 
   return (
-    <div className="columns">
+    <div className="columns wrap is-3">
       {ACHIEVEMENTS.filter((achievement) =>
         achievement.condition(gameState)
       ).map((achievement) => (
-        <div className="card column is-one-quarter" key={achievement.id}>
+        <div className="card column is-2" key={achievement.id}>
           <div className="card-content">
             <p className="title is-4">{achievement.name}</p>
 
