@@ -1,10 +1,10 @@
 import ReactDOM from "react-dom/client";
 import { store } from "./store";
 import { Provider } from "react-redux";
-import Navbar from "./Navbar.tsx";
+import App from "./App.tsx";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <Provider store={store}>
-    <Navbar />
+    <App />
   </Provider>
 );
