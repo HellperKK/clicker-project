@@ -102,16 +102,16 @@ export const ACHIEVEMENTS = [
   achievementMaker.make(
     "10 mass",
     "Purchase 10 mass",
-    (state: GameState) => state.buildings[4].quantity >= 10
+    (state: GameState) => state.buildings[5].quantity >= 10
   ),
   achievementMaker.make(
     "50 mass",
     "Purchase 50 mass",
-    (state: GameState) => state.buildings[4].quantity >= 50
+    (state: GameState) => state.buildings[5].quantity >= 50
   ),
   achievementMaker.make(
     "100 mass",
     "Purchase 100 mass",
-    (state: GameState) => state.buildings[4].quantity >= 100
+    (state: GameState) => state.buildings[5].quantity >= 100
   ),
 ];
