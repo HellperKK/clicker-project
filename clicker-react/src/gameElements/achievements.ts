@@ -5,6 +5,7 @@ export interface Achievement {
   name: string;
   description: string;
   condition: (state: GameState) => boolean;
+  isDiscovered: boolean;
 }
 
 const achievementMaker = {
@@ -19,6 +20,7 @@ const achievementMaker = {
       description,
       condition,
       id: this.id++,
+      isDiscovered: false,
     };
   },
 };
