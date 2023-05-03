@@ -1,13 +1,15 @@
+import { produce } from "immer";
+import { useSelector } from "react-redux";
 import { useState } from "react";
-import Game from "./components/game/Game";
-import Options from "./components/options/Options";
+
 import AchievementsTab from "./components/achievementsTab/AchievementsTab";
 import { ACHIEVEMENTS } from "./gameElements/achievements";
-import "./App.css";
-import { useSelector } from "react-redux";
-import { RootState } from "./store/store";
 import GameState from "./Gamestate";
-import { produce } from "immer";
+import Game from "./components/game/Game";
+import Options from "./components/options/Options";
+import { RootState } from "./store/store";
+
+import "./App.css";
 
 function Navbar() {
   const money = useSelector((state: RootState) => state.money.value);
