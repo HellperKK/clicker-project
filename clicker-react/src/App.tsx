@@ -55,7 +55,7 @@ function Navbar() {
               }}
             >
               Achievements{" "}
-              {alert && <span className="has-text-info">"NEW!"</span>}
+              {alert && <span className="has-text-info">NEW!</span>}
             </a>
           </li>
         </ul>
