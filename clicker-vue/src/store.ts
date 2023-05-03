@@ -37,6 +37,14 @@ export const useGameStore = defineStore("game", () => {
     buildings.value = newBuildings;
   }
 
+  function unlockBuilding(building: Building) {
+    const index = buildings.value.findIndex((b) => b.id === building.id);
+
+    if (index !== undefined) {
+      buildings.value[index].isUnlocked = true;
+    }
+  }
+
   return {
     money,
     buildings,
@@ -48,5 +56,6 @@ export const useGameStore = defineStore("game", () => {
     buyBuilding,
     resetBuildings,
     setBuildings,
+    unlockBuilding,
   };
 });

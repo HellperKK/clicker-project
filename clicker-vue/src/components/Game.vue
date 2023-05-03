@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { Ref, onMounted, onUnmounted, onUpdated, ref } from 'vue';
 import { useGameStore } from '../store';
-import { Building, buildingTruePrice, buildingsGain, buildingShowingValue } from '../buildings';
-import HideElement from "./HideElement.vue"
+import { Building, buildingShowingValue, buildingTruePrice, buildingsGain } from '../buildings';
 import burger from "../assets/burger.png";
 
 const store = useGameStore()
@@ -21,6 +20,12 @@ onUpdated(() => {
   interval.value = setInterval(() => {
     store.changeMoneyByAmount(buildingsGain(store.getBuildings) / 10)
   }, 100)
+
+  store.getBuildings.forEach(building => {
+    if (!building.isUnlocked && buildingShowingValue(building) <= store.getMoney) {
+      store.unlockBuilding(building)
+    }
+  })
 })
 
 onUnmounted(() => {
@@ -68,13 +73,11 @@ function formatNumber(num: number) {
       <div class="columns">
         <div class="column"></div>
       </div>
-      <div v-for="building in  store.getBuildings " key={building.id}>
-        <HideElement :minimalShow="buildingShowingValue(building)">
-          <button class="button max-width is-size-4" :title="buildingTitle(building)"
-            :disabled="store.getMoney < buildingTruePrice(building)" @click="buyBuilding(building)">
-            {{ building.name }}({{ building.quantity }}) {{ formatNumber(buildingTruePrice(building)) }}
-          </button>
-        </HideElement>
+      <div v-for="building in  store.getBuildings" key={building.id}>
+        <button v-if="building.isUnlocked" class="button max-width is-size-4" :title="buildingTitle(building)"
+          :disabled="store.getMoney < buildingTruePrice(building)" @click="buyBuilding(building)">
+          {{ building.name }}({{ building.quantity }}) {{ formatNumber(buildingTruePrice(building)) }}
+        </button>
       </div>
     </div>
   </div>
