@@ -21,14 +21,4 @@ const filteredAchievements = computed(() => props.achievements.filter(achievemen
   </div>
 </template>
 
-<style scoped>
-.max-width {
-  width: 100%;
-}
-
-.transparent-button {
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-}
-</style>
+<style scoped></style>
