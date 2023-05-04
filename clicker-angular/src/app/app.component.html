@@ -6,7 +6,13 @@
     <li [class.is-active]="tabIndex === 1">
       <a (click)="setTabIndex(1)">Options</a>
     </li>
+    <li [class.is-active]="tabIndex === 2">
+      <a (click)="setTabIndex(2)">
+        Achivements <span *ngIf="alerted" class="has-text-info">NEWS!</span>
+      </a>
+    </li>
   </ul>
 </div>
 <div [class.hidden]="tabIndex !== 0"><app-game /></div>
 <div [class.hidden]="tabIndex !== 1"><app-options /></div>
+<div [class.hidden]="tabIndex !== 2"><app-options /></div>

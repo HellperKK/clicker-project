@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ACHIEVEMENTS } from './achievements';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   tabIndex = 0;
+
+  achivements = ACHIEVEMENTS;
+  alerted = false;
+
+  ngDoCheck() {}
 
   setTabIndex(num: number) {
     this.tabIndex = num;

@@ -16,18 +16,16 @@
     <div class="columns">
       <div class="column"></div>
     </div>
-    <div *ngFor="let building of buildings$ | async" key="{building.id}">
-      <app-hidden-element [minimalShow]="buildingShowingValue(building)">
-        <button
-          class="button max-width is-size-4"
-          [title]="buildingTitle(building)"
-          [disabled]="money < buildingTruePrice(building)"
-          (click)="buyBuilding(building)"
-        >
-          {{ building.name }}({{ building.quantity }})
-          {{ buildingTruePrice(building) | formatNumber }}
-        </button>
-      </app-hidden-element>
+    <div *ngFor="let building of buildingsUnlocked()">
+      <button
+        class="button max-width is-size-4"
+        [title]="buildingTitle(building)"
+        [disabled]="money < buildingTruePrice(building)"
+        (click)="buyBuilding(building)"
+      >
+        {{ building.name }}({{ building.quantity }})
+        {{ buildingTruePrice(building) | formatNumber }}
+      </button>
     </div>
   </div>
 </div>

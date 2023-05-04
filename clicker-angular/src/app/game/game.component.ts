@@ -8,7 +8,7 @@ import {
   buildingTruePrice,
   buildingsGain,
 } from '../buildings';
-import { buyBuilding } from '../buildings.actions';
+import { buyBuilding, unlockBuilding } from '../buildings.actions';
 
 @Component({
   selector: 'app-game',
@@ -20,6 +20,7 @@ export class GameComponent implements OnInit {
   buildings$: Observable<Array<Building>>;
 
   money: number;
+  buildings: Array<Building>;
   buildingsGain: number;
 
   interval: number;
@@ -34,12 +35,13 @@ export class GameComponent implements OnInit {
 
     this.money$.subscribe((money) => (this.money = money));
 
-    this.buildings$.subscribe(
-      (buildings) => (this.buildingsGain = buildingsGain(buildings))
-    );
+    this.buildings$.subscribe((buildings) => {
+      this.buildingsGain = buildingsGain(buildings);
+      this.buildings = buildings;
+    });
   }
 
-  ngAfterViewChecked() {
+  ngDoCheck() {
     if (this.interval) {
       clearInterval(this.interval);
     }
@@ -49,6 +51,15 @@ export class GameComponent implements OnInit {
         changeMoneyByAmount({ amount: this.buildingsGain / 10 })
       );
     }, 100);
+
+    this.buildings.forEach((building) => {
+      if (
+        !building.isUnlocked &&
+        buildingShowingValue(building) <= this.money
+      ) {
+        this.store.dispatch(unlockBuilding({ building }));
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -78,5 +89,9 @@ export class GameComponent implements OnInit {
 
   buildingShowingValue(building: Building) {
     return buildingShowingValue(building);
+  }
+
+  buildingsUnlocked() {
+    return this.buildings.filter((building) => building.isUnlocked);
   }
 }

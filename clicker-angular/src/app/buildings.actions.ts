@@ -12,3 +12,7 @@ export const buyBuilding = createAction(
   '[Buildings Component] BuyBuilding',
   props<{ building: Building }>()
 );
+export const unlockBuilding = createAction(
+  '[Buildings Component] UnlockBuilding',
+  props<{ building: Building }>()
+);
