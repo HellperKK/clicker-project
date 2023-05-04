@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./Game.css";
 import {
   buildingShowingValue,
@@ -17,6 +17,8 @@ function App() {
     (state: RootState) => state.buildings.buildings
   );
   const dispatch = useDispatch();
+
+  const [date, setDate] = useState<Date>(new Date());
 
   buildings.forEach((building) => {
     if (!building.isUnlocked && money >= buildingShowingValue(building)) {
@@ -40,6 +42,23 @@ function App() {
     }, 100);
     return () => clearInterval(interval);
   }, [buildings, dispatch]);
+
+  useEffect(() => {
+    const event = () => {
+      if (document.hidden) {
+        console.log("hidden");
+        setDate(new Date());
+      } else {
+        console.log("reveal");
+        const nowDate = new Date();
+        const delay = nowDate.getTime() - date.getTime();
+        const reward = buildingsGain(buildings);
+        dispatch(changeByAmount(reward * Math.floor(delay / 1000)));
+      }
+    };
+    document.addEventListener("visibilitychange", event);
+    return () => document.removeEventListener("visibilitychange", event);
+  }, [date, buildings, dispatch]);
 
   return (
     <>
