@@ -45,21 +45,22 @@ onUpdated(() => {
         <a @click="setTabIndex(1)">Options</a>
       </li>
       <li :class="{ 'is-active': tabIndex === 2 }">
-        <a @click="setTabIndex(2); stopAlerted()">Achievements <span v-if=" alterted "
-            class="has-text-info">NEWS!</span></a>
+        <a @click="setTabIndex(2); stopAlerted()">
+          Achievements <span v-if="alterted" class="has-text-info">NEWS!</span>
+        </a>
       </li>
     </ul>
   </div>
-  <div :class=" { hidden: tabIndex !== 0 } ">
+  <div :class="{ hidden: tabIndex !== 0 }">
     <Game />
   </div>
-  <div :class=" { hidden: tabIndex !== 1 } ">
+  <div :class="{ hidden: tabIndex !== 1 }">
     <Options />
   </div>
-  <div :class=" { hidden: tabIndex !== 2 } ">
-    <Achievements :achievements=" achievements " />
+  <div :class="{ hidden: tabIndex !== 2 }">
+    <Achievements :achievements="achievements" />
   </div>
-  <div v-if=" store.getMoney < 0 ">{{ store.getMoney }}</div>
+  <div v-if="store.getMoney < 0">{{ store.getMoney }}</div>
 </template>
 
 <style>
