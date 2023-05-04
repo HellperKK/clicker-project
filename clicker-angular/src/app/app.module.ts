@@ -10,6 +10,7 @@ import { FormatNumberPipe } from './format-number.pipe';
 import { moneyReducer } from './money.reducer';
 import { buildingsReducer } from './buildings.reducer';
 import { HiddenElementComponent } from './hidden-element/hidden-element.component';
+import { AchivementsTabComponent } from './achivements-tab/achivements-tab.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { HiddenElementComponent } from './hidden-element/hidden-element.componen
     GameComponent,
     FormatNumberPipe,
     HiddenElementComponent,
+    AchivementsTabComponent,
   ],
   imports: [
     BrowserModule,

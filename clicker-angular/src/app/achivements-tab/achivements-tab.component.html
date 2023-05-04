@@ -1,0 +1,15 @@
+<div class="columns wrap is-3">
+  <div
+    *ngFor="let achievement of discoveredAchievements()"
+    class="column is-2"
+    key="{achievement.id}"
+  >
+    <div class="card">
+      <div class="card-content">
+        <p class="title is-4">{{ achievement.name }}</p>
+
+        <div class="content">{{ achievement.description }}</div>
+      </div>
+    </div>
+  </div>
+</div>
