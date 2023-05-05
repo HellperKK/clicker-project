@@ -24,6 +24,8 @@ export class GameComponent implements OnInit {
   buildingsGain: number;
 
   interval: number;
+  date: Date = new Date();
+  event: ((this: Document, ev: Event) => any) | null = null;
 
   constructor(
     private store: Store<{ money: number; buildings: Array<Building> }>
@@ -60,6 +62,25 @@ export class GameComponent implements OnInit {
         this.store.dispatch(unlockBuilding({ building }));
       }
     });
+
+    if (this.event) {
+      document.removeEventListener('visibilitychange', this.event);
+    }
+    this.event = () => {
+      if (document.hidden) {
+        console.log('hidden');
+        this.date = new Date();
+      } else {
+        console.log('reveal');
+        const nowDate = new Date();
+        const delay = nowDate.getTime() - this.date.getTime();
+        const reward = buildingsGain(this.buildings);
+        this.store.dispatch(
+          changeMoneyByAmount({ amount: reward * Math.floor(delay / 1000) })
+        );
+      }
+    };
+    document.addEventListener('visibilitychange', this.event);
   }
 
   ngOnDestroy() {
