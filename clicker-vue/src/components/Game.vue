@@ -6,6 +6,8 @@ import burger from "../assets/burger.png";
 
 const store = useGameStore()
 let interval: Ref<number | null> = ref(null);
+let date: Ref<Date> = ref(new Date());
+let event: Ref<((this: Document, ev: Event) => any) | null> = ref(null);
 
 onMounted(() => {
   interval.value = setInterval(() => {
@@ -26,6 +28,24 @@ onUpdated(() => {
       store.unlockBuilding(building)
     }
   })
+
+  if (event.value) {
+    document.removeEventListener("visibilitychange", event.value);
+  }
+  event.value = () => {
+    if (document.hidden) {
+      console.log("hidden");
+      date.value = new Date();
+    } else {
+      console.log("reveal");
+      const nowDate = new Date();
+      const delay = nowDate.getTime() - date.value.getTime();
+      const reward = buildingsGain(store.getBuildings);
+      store.changeMoneyByAmount(reward * Math.floor(delay / 1000));
+    }
+  };
+  document.addEventListener("visibilitychange", event.value);
+
 })
 
 onUnmounted(() => {
