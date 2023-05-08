@@ -6,6 +6,8 @@ This project's objective is to build a web app in react and then build two copie
 
 Obviously I'm not an expert of the three frameworks so feel free to open an issue if you have some suggestions to make!
 
+You can try the game [here](https://hellperkk.github.io/clicker-project/)
+
 
 ## how to use
 
