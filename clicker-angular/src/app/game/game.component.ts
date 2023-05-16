@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { changeMoneyByAmount } from '../money.actions';
+import { changeMoneyByAmount } from '../store/money.actions';
 import { Store } from '@ngrx/store';
 import {
   Building,
   buildingShowingValue,
   buildingTruePrice,
   buildingsGain,
-} from '../buildings';
-import { buyBuilding, unlockBuilding } from '../buildings.actions';
+} from '../gameElements/buildings';
+import { buyBuilding, unlockBuilding } from '../store/buildings.actions';
 
 @Component({
   selector: 'app-game',

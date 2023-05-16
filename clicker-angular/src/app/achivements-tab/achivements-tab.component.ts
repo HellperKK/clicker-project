@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Achievement } from '../achievements';
+import { Achievement } from '../gameElements/achievements';
 
 @Component({
   selector: 'app-achivements-tab',

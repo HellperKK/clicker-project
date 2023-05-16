@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { ACHIEVEMENTS } from './achievements';
+import { ACHIEVEMENTS } from './gameElements/achievements';
 import { Observable } from 'rxjs';
-import { Building } from './buildings';
+import { Building } from './gameElements/buildings';
 import { Store } from '@ngrx/store';
 import { produce } from 'immer';
+import { Achievement } from './gameElements/achievements';
 
 @Component({
   selector: 'app-root',
@@ -36,11 +37,14 @@ export class AppComponent {
   ngDoCheck() {
     const gameState = { money: this.money, buildings: this.buildings };
 
-    this.achievements.forEach((achivement, index) => {
+    this.achievements.forEach((achivement: Achievement, index: number) => {
       if (!achivement.isDiscovered && achivement.condition(gameState)) {
-        this.achievements = produce(this.achievements, (draft) => {
-          draft[index].isDiscovered = true;
-        });
+        this.achievements = produce(
+          this.achievements,
+          (draft: Array<Achievement>) => {
+            draft[index].isDiscovered = true;
+          }
+        );
         this.alerted = true;
       }
     });

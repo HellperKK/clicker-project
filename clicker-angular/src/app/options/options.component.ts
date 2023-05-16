@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { Building } from '../buildings';
-import { resetMoney, setMoney } from '../money.actions';
-import { resetBuildings, setBuildings } from '../buildings.actions';
-import { download, openFiles } from '../utils';
+import { Building } from '../gameElements/buildings';
+import { resetMoney, setMoney } from '../store/money.actions';
+import { resetBuildings, setBuildings } from '../store/buildings.actions';
+import { download } from '../utils/download';
+import { openFiles } from '../utils/openfiles';
 
 @Component({
   selector: 'app-options',

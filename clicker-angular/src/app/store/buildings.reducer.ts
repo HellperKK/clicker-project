@@ -6,7 +6,7 @@ import {
   unlockBuilding,
 } from './buildings.actions';
 import { produce } from 'immer';
-import { BUILDINGS } from './buildings';
+import { BUILDINGS, Building } from '../gameElements/buildings';
 
 export const initialState = BUILDINGS;
 
@@ -15,18 +15,18 @@ export const buildingsReducer = createReducer(
   on(setBuildings, (_state, { buildings }) => buildings),
   on(resetBuildings, (_state) => BUILDINGS),
   on(buyBuilding, (state, { building }) => {
-    const index = state.findIndex((b) => b.id === building.id);
+    const index = state.findIndex((b: Building) => b.id === building.id);
 
-    return produce(state, (draft) => {
+    return produce(state, (draft: Array<Building>) => {
       if (index !== undefined) {
         draft[index].quantity++;
       }
     });
   }),
   on(unlockBuilding, (state, { building }) => {
-    const index = state.findIndex((b) => b.id === building.id);
+    const index = state.findIndex((b: Building) => b.id === building.id);
 
-    return produce(state, (draft) => {
+    return produce(state, (draft: Array<Building>) => {
       if (index !== undefined) {
         draft[index].isUnlocked = true;
       }

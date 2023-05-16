@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Building } from './buildings';
+import { Building } from '../gameElements/buildings';
 
 export const setBuildings = createAction(
   '[Buildings Component] SetBuildings',

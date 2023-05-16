@@ -7,9 +7,8 @@ import { StoreModule } from '@ngrx/store';
 import { GameComponent } from './game/game.component';
 import { FormatNumberPipe } from './format-number.pipe';
 
-import { moneyReducer } from './money.reducer';
-import { buildingsReducer } from './buildings.reducer';
-import { HiddenElementComponent } from './hidden-element/hidden-element.component';
+import { moneyReducer } from './store/money.reducer';
+import { buildingsReducer } from './store/buildings.reducer';
 import { AchivementsTabComponent } from './achivements-tab/achivements-tab.component';
 
 @NgModule({
@@ -18,7 +17,6 @@ import { AchivementsTabComponent } from './achivements-tab/achivements-tab.compo
     OptionsComponent,
     GameComponent,
     FormatNumberPipe,
-    HiddenElementComponent,
     AchivementsTabComponent,
   ],
   imports: [
