@@ -3,10 +3,12 @@ import Options from "./components/Options.vue"
 import Game from "./components/Game.vue"
 import Achievements from "./components/Achievements.vue"
 import { onUpdated, ref } from "vue";
-import { useGameStore } from "./store";
-import { ACHIEVEMENTS } from "./achievements";
+import { ACHIEVEMENTS } from "./gameElements/achievements";
+import { useMoneyStore } from "./store/money";
+import { useBuildingsStore } from "./store/buildings";
 
-const store = useGameStore()
+const buildingsStore = useBuildingsStore();
+const moneyStore = useMoneyStore();
 
 const tabIndex = ref(0);
 const achievements = ref(ACHIEVEMENTS);
@@ -22,7 +24,7 @@ function stopAlerted() {
 }
 
 onUpdated(() => {
-  const gameState = { money: store.getMoney, buildings: store.getBuildings }
+  const gameState = { money: moneyStore.getMoney, buildings: buildingsStore.getBuildings }
 
   achievements.value.forEach((achivement, index) => {
     if (!achivement.isDiscovered && achivement.condition(gameState)) {
@@ -60,7 +62,7 @@ onUpdated(() => {
   <div :class="{ hidden: tabIndex !== 2 }">
     <Achievements :achievements="achievements" />
   </div>
-  <div v-if="store.getMoney < 0">{{ store.getMoney }}</div>
+  <div v-if="moneyStore.getMoney < 0">{{ moneyStore.getMoney }}</div>
 </template>
 
 <style>

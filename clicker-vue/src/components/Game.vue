@@ -1,17 +1,20 @@
 <script setup lang="ts">
 import { Ref, onMounted, onUnmounted, onUpdated, ref } from 'vue';
-import { useGameStore } from '../store';
-import { Building, buildingShowingValue, buildingTruePrice, buildingsGain } from '../buildings';
+import { useBuildingsStore } from '../store/buildings';
+import { Building, buildingShowingValue, buildingTruePrice, buildingsGain } from '../gameElements/buildings';
 import burger from "../assets/burger.png";
+import { useMoneyStore } from '../store/money';
 
-const store = useGameStore()
+const buildingsStore = useBuildingsStore();
+const moneyStore = useMoneyStore();
+
 let interval: Ref<number | null> = ref(null);
 let date: Ref<Date> = ref(new Date());
 let event: Ref<((this: Document, ev: Event) => any) | null> = ref(null);
 
 onMounted(() => {
   interval.value = setInterval(() => {
-    store.changeMoneyByAmount(buildingsGain(store.getBuildings) / 10)
+    moneyStore.changeMoneyByAmount(buildingsGain(buildingsStore.getBuildings) / 10)
   }, 100)
 })
 
@@ -20,12 +23,12 @@ onUpdated(() => {
     clearInterval(interval.value);
   }
   interval.value = setInterval(() => {
-    store.changeMoneyByAmount(buildingsGain(store.getBuildings) / 10)
+    moneyStore.changeMoneyByAmount(buildingsGain(buildingsStore.getBuildings) / 10)
   }, 100)
 
-  store.getBuildings.forEach(building => {
-    if (!building.isUnlocked && buildingShowingValue(building) <= store.getMoney) {
-      store.unlockBuilding(building)
+  buildingsStore.getBuildings.forEach(building => {
+    if (!building.isUnlocked && buildingShowingValue(building) <= moneyStore.getMoney) {
+      buildingsStore.unlockBuilding(building)
     }
   })
 
@@ -40,8 +43,8 @@ onUpdated(() => {
       console.log("reveal");
       const nowDate = new Date();
       const delay = nowDate.getTime() - date.value.getTime();
-      const reward = buildingsGain(store.getBuildings);
-      store.changeMoneyByAmount(reward * Math.floor(delay / 1000));
+      const reward = buildingsGain(buildingsStore.getBuildings);
+      moneyStore.changeMoneyByAmount(reward * Math.floor(delay / 1000));
     }
   };
   document.addEventListener("visibilitychange", event.value);
@@ -60,8 +63,8 @@ function buildingTitle(building: Building) {
 }
 
 function buyBuilding(building: Building) {
-  store.changeMoneyByAmount(Math.ceil(-buildingTruePrice(building)));
-  store.buyBuilding(building);
+  moneyStore.changeMoneyByAmount(Math.ceil(-buildingTruePrice(building)));
+  buildingsStore.buyBuilding(building);
 }
 
 function formatNumber(num: number) {
@@ -78,14 +81,14 @@ function formatNumber(num: number) {
   <div class="columns">
     <div class="column is-one-third  has-text-centered">
       <p class="is-size-1">
-        Money : {{ formatNumber(store.getMoney) }} (+
-        {{ formatNumber(buildingsGain(store.getBuildings)) }}/s)
+        Money : {{ formatNumber(moneyStore.getMoney) }} (+
+        {{ formatNumber(buildingsGain(buildingsStore.getBuildings)) }}/s)
       </p>
-      <button class="transparent-button" @click="store.changeMoneyByAmount(1)">
+      <button class="transparent-button" @click="moneyStore.changeMoneyByAmount(1)">
         <img :src="burger" alt="Click me!" />
       </button>
       <br />
-      <button class="button" @click="store.changeMoneyByAmount(1_000_000_000)">
+      <button class="button" @click="moneyStore.changeMoneyByAmount(1_000_000_000)">
         Cheat
       </button>
     </div>
@@ -93,9 +96,9 @@ function formatNumber(num: number) {
       <div class="columns">
         <div class="column"></div>
       </div>
-      <div v-for="building in  store.getBuildings" key={building.id}>
+      <div v-for="building in  buildingsStore.getBuildings" key={building.id}>
         <button v-if="building.isUnlocked" class="button max-width is-size-4" :title="buildingTitle(building)"
-          :disabled="store.getMoney < buildingTruePrice(building)" @click="buyBuilding(building)">
+          :disabled="moneyStore.getMoney < buildingTruePrice(building)" @click="buyBuilding(building)">
           {{ building.name }}({{ building.quantity }}) {{ formatNumber(buildingTruePrice(building)) }}
         </button>
       </div>

@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import { useGameStore } from '../store';
-import { download, openFiles } from "../utils"
+import { useBuildingsStore } from '../store/buildings';
+import { useMoneyStore } from '../store/money';
+import { download } from '../utils/download';
+import { openFiles } from '../utils/openfiles';
 
-const store = useGameStore()
+
+const buildingsStore = useBuildingsStore();
+const moneyStore = useMoneyStore();
 
 function reset() {
-  store.resetMoney(); store.resetBuildings();
+  moneyStore.resetMoney(); buildingsStore.resetBuildings();
 }
 
 function save() {
   const state = {
-    buildings: store.getBuildings,
-    money: store.getMoney,
+    buildings: buildingsStore.getBuildings,
+    money: moneyStore.getMoney,
   };
   localStorage.setItem("save", JSON.stringify(state));
 }
@@ -20,16 +24,16 @@ function load() {
   const save = localStorage.getItem("save");
   if (save !== null) {
     const state = JSON.parse(save);
-    store.setMoney(state.money);
-    store.setBuildings(state.buildings);
+    moneyStore.setMoney(state.money);
+    buildingsStore.setBuildings(state.buildings);
   }
 
 }
 
 function exportSave() {
   const state = {
-    buildings: store.getBuildings,
-    money: store.getMoney,
+    buildings: buildingsStore.getBuildings,
+    money: moneyStore.getMoney,
   };
   download("save.json", JSON.stringify(state));
 }
@@ -41,8 +45,8 @@ async function importSave() {
   if (file) {
     const content = await file.text();
     const state = JSON.parse(content);
-    store.setMoney(state.money);
-    store.setBuildings(state.buildings);
+    moneyStore.setMoney(state.money);
+    buildingsStore.setBuildings(state.buildings);
   }
 
 }

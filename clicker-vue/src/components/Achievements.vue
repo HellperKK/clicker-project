@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { Achievement } from '../achievements';
+import { Achievement } from '../gameElements/achievements';
 
 const props = defineProps<{ achievements: Array<Achievement> }>()
 
