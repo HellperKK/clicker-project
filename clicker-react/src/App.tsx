@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import AchievementsTab from "./components/achievementsTab/AchievementsTab";
 import { ACHIEVEMENTS } from "./gameElements/achievements";
-import GameState from "./Gamestate";
+import GameState from "./utils/Gamestate";
 import Game from "./components/game/Game";
 import Options from "./components/options/Options";
 import { RootState } from "./store/store";
