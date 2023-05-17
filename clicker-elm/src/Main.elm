@@ -4,6 +4,7 @@ import Array
 import Browser
 import GameElements.Buildings exposing (..)
 import Html exposing (..)
+import Html.Attributes exposing (disabled)
 import Html.Events exposing (onClick)
 import Time
 import Utils.Format exposing (formatFloat)
@@ -57,7 +58,7 @@ update msg model =
             ( { model | money = model.money + (buildingsGain model.buildings |> toFloat |> (\x -> x / 10)) }, Cmd.none )
 
         BuyBuilding index ->
-            ( { model | buildings = buyBuilding index model.buildings }, Cmd.none )
+            ( { model | buildings = buyBuilding index model.buildings, money = model.money - toFloat (getBuildingPrice index model.buildings) }, Cmd.none )
 
 
 
@@ -78,5 +79,16 @@ view model =
     div []
         [ h1 [] [ text ("Money : " ++ formatFloat model.money ++ " Gain : " ++ String.fromInt (buildingsGain model.buildings)) ]
         , button [ onClick (ChangeMoney 1) ] [ text "click" ]
-        , div [] (Array.indexedMap (\index building -> button [ onClick (BuyBuilding index) ] [ text (building.name ++ " " ++ String.fromInt building.quantity) ]) model.buildings |> Array.toList)
+        , div []
+            (Array.indexedMap
+                (\index building ->
+                    button
+                        [ onClick (BuyBuilding index)
+                        , disabled (toFloat (getBuildingPrice index model.buildings) > model.money)
+                        ]
+                        [ text (building.name ++ " " ++ String.fromInt (getBuildingPrice index model.buildings)) ]
+                )
+                model.buildings
+                |> Array.toList
+            )
         ]

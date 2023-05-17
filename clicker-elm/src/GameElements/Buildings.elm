@@ -37,6 +37,13 @@ buildingsGain builds =
     Array.foldl (\building memo -> memo + building.moneyGain * building.quantity) 0 builds
 
 
+getBuildingPrice : Int -> Array Building -> Int
+getBuildingPrice index builds =
+    Array.get index builds
+        |> Maybe.map (\building -> ceiling (toFloat building.basePrice * 1.1 ^ toFloat building.quantity))
+        |> Maybe.withDefault 0
+
+
 buildings : Array Building
 buildings =
     Array.fromList
