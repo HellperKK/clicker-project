@@ -51,11 +51,11 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd msg )
 update msg model =
     case msg of
-        ChangeMoney amount ->
-            ( { model | money = model.money + amount }, Cmd.none )
-
         UpdateMoney _ ->
             ( { model | money = model.money + (buildingsGain model.buildings |> toFloat |> (\x -> x / 10)) }, Cmd.none )
+
+        ChangeMoney amount ->
+            ( { model | money = model.money + amount }, Cmd.none )
 
         BuyBuilding index ->
             ( { model | buildings = buyBuilding index model.buildings, money = model.money - toFloat (getBuildingPrice index model.buildings) }, Cmd.none )
