@@ -1,6 +1,6 @@
 module Main exposing (..)
 
-import Array
+import Array exposing (Array)
 import Browser
 import GameElements.Buildings exposing (..)
 import Html exposing (..)
@@ -14,6 +14,7 @@ import Utils.Format exposing (formatFloat)
 -- MAIN
 
 
+main : Program () Model Msg
 main =
     Browser.element
         { init = init
@@ -42,6 +43,24 @@ init _ =
 -- UPDATE
 
 
+updateMoney : Model -> Float
+updateMoney model =
+    model.money + (buildingsGain model.buildings |> toFloat |> (\x -> x / 10))
+
+
+unlockBuildings : Model -> Array Building
+unlockBuildings model =
+    Array.map
+        (\building ->
+            if (toFloat building.basePrice * 0.5) <= model.money then
+                { building | isUnlocked = True }
+
+            else
+                building
+        )
+        model.buildings
+
+
 type Msg
     = ChangeMoney Float
     | BuyBuilding Int
@@ -52,7 +71,7 @@ update : Msg -> Model -> ( Model, Cmd msg )
 update msg model =
     case msg of
         UpdateMoney _ ->
-            ( { model | money = model.money + (buildingsGain model.buildings |> toFloat |> (\x -> x / 10)) }, Cmd.none )
+            ( { model | money = updateMoney model, buildings = unlockBuildings model }, Cmd.none )
 
         ChangeMoney amount ->
             ( { model | money = model.money + amount }, Cmd.none )
@@ -74,21 +93,24 @@ subscriptions _ =
 -- VIEW
 
 
+buildingsToButtons : Model -> List (Html Msg)
+buildingsToButtons model =
+    Array.filter (\building -> building.isUnlocked) model.buildings
+        |> Array.indexedMap
+            (\index building ->
+                button
+                    [ onClick (BuyBuilding index)
+                    , disabled (toFloat (getBuildingPrice index model.buildings) > model.money)
+                    ]
+                    [ text (building.name ++ " " ++ String.fromInt (getBuildingPrice index model.buildings)) ]
+            )
+        |> Array.toList
+
+
 view : Model -> Html Msg
 view model =
     div []
         [ h1 [] [ text ("Money : " ++ formatFloat model.money ++ " Gain : " ++ String.fromInt (buildingsGain model.buildings)) ]
         , button [ onClick (ChangeMoney 1) ] [ text "click" ]
-        , div []
-            (Array.indexedMap
-                (\index building ->
-                    button
-                        [ onClick (BuyBuilding index)
-                        , disabled (toFloat (getBuildingPrice index model.buildings) > model.money)
-                        ]
-                        [ text (building.name ++ " " ++ String.fromInt (getBuildingPrice index model.buildings)) ]
-                )
-                model.buildings
-                |> Array.toList
-            )
+        , div [] (buildingsToButtons model)
         ]
