@@ -10,6 +10,7 @@ import { FormatNumberPipe } from './format-number.pipe';
 import { moneyReducer } from './store/money.reducer';
 import { buildingsReducer } from './store/buildings.reducer';
 import { AchivementsTabComponent } from './achivements-tab/achivements-tab.component';
+import { achievementsReducer } from './store/achievements.reducer';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,11 @@ import { AchivementsTabComponent } from './achivements-tab/achivements-tab.compo
   ],
   imports: [
     BrowserModule,
-    StoreModule.forRoot({ money: moneyReducer, buildings: buildingsReducer }),
+    StoreModule.forRoot({
+      money: moneyReducer,
+      buildings: buildingsReducer,
+      achievements: achievementsReducer,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],
