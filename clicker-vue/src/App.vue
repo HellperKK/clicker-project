@@ -3,15 +3,16 @@ import Options from "./components/Options.vue"
 import Game from "./components/Game.vue"
 import Achievements from "./components/Achievements.vue"
 import { onUpdated, ref } from "vue";
-import { ACHIEVEMENTS } from "./gameElements/achievements";
 import { useMoneyStore } from "./store/money";
 import { useBuildingsStore } from "./store/buildings";
+import { useAchivementsStore } from "./store/achivements";
+import { achivementUnlockable } from "./gameElements/achivementsUtils";
 
 const buildingsStore = useBuildingsStore();
 const moneyStore = useMoneyStore();
+const achivementsStore = useAchivementsStore();
 
 const tabIndex = ref(0);
-const achievements = ref(ACHIEVEMENTS);
 const alterted = ref(false);
 
 
@@ -24,11 +25,12 @@ function stopAlerted() {
 }
 
 onUpdated(() => {
-  const gameState = { money: moneyStore.getMoney, buildings: buildingsStore.getBuildings }
+  const achievements = achivementsStore.getAchivements
+  const gameState = { money: moneyStore.getMoney, buildings: buildingsStore.getBuildings, achievements }
 
-  achievements.value.forEach((achivement, index) => {
-    if (!achivement.isDiscovered && achivement.condition(gameState)) {
-      achievements.value[index].isDiscovered = true;
+  achievements.forEach((achivement) => {
+    if (!achivement.isDiscovered && achivementUnlockable(gameState, achivement)) {
+      achivementsStore.unlockAchivement(achivement)
       alterted.value = true;
     }
   })
@@ -60,7 +62,7 @@ onUpdated(() => {
     <Options />
   </div>
   <div :class="{ hidden: tabIndex !== 2 }">
-    <Achievements :achievements="achievements" />
+    <Achievements :achievements="achivementsStore.getAchivements" />
   </div>
   <div v-if="moneyStore.getMoney < 0">{{ moneyStore.getMoney }}</div>
 </template>
