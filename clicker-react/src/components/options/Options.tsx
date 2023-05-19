@@ -5,12 +5,20 @@ import { resetBuildings, setBuildings } from "../../store/buildingSlice";
 import { RootState } from "../../store/store";
 import { download } from "../../utils/download";
 import { openFiles } from "../../utils/openfiles";
+import GameState from "../../utils/Gamestate";
+import {
+  resetAchievements,
+  setAchievements,
+} from "../../store/achivementSlice";
 
 function Options() {
   const dispatch = useDispatch();
   const money = useSelector((state: RootState) => state.money.value);
   const buildings = useSelector(
     (state: RootState) => state.buildings.buildings
+  );
+  const achivements = useSelector(
+    (state: RootState) => state.achievements.achievements
   );
 
   return (
@@ -20,6 +28,7 @@ function Options() {
         onClick={() => {
           dispatch(resetMoney());
           dispatch(resetBuildings());
+          dispatch(resetAchievements());
         }}
       >
         Reset
@@ -27,9 +36,10 @@ function Options() {
       <button
         className="button"
         onClick={() => {
-          const state = {
+          const state: GameState = {
             buildings,
             money,
+            achivements,
           };
           localStorage.setItem("save", JSON.stringify(state));
         }}
@@ -41,9 +51,10 @@ function Options() {
         onClick={() => {
           const save = localStorage.getItem("save");
           if (save !== null) {
-            const state = JSON.parse(save);
+            const state: GameState = JSON.parse(save);
             dispatch(setMoney(state.money));
             dispatch(setBuildings(state.buildings));
+            dispatch(setAchievements(state.achivements));
           }
         }}
       >
@@ -52,9 +63,10 @@ function Options() {
       <button
         className="button"
         onClick={() => {
-          const state = {
+          const state: GameState = {
             buildings,
             money,
+            achivements,
           };
           download("save.json", JSON.stringify(state));
         }}
@@ -69,9 +81,10 @@ function Options() {
 
           if (file) {
             const content = await file.text();
-            const state = JSON.parse(content);
+            const state: GameState = JSON.parse(content);
             dispatch(setMoney(state.money));
             dispatch(setBuildings(state.buildings));
+            dispatch(setAchievements(state.achivements));
           }
         }}
       >

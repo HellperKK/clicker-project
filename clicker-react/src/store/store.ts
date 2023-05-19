@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import moneySlice from "./moneySlice";
 import buildingsSlice from "./buildingSlice";
+import achivementSlice from "./achivementSlice";
 
 export const store = configureStore({
   reducer: {
     money: moneySlice,
     buildings: buildingsSlice,
+    achievements: achivementSlice,
   },
 });
 
