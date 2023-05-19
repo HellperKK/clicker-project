@@ -4,5 +4,5 @@ import { Building } from "../gameElements/buildings";
 export default interface GameState {
   money: number;
   buildings: Array<Building>;
-  achivements: Array<Achievement>;
+  achievements: Array<Achievement>;
 }

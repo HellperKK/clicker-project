@@ -16,7 +16,7 @@ function Navbar() {
   const buildings = useSelector(
     (state: RootState) => state.buildings.buildings
   );
-  const achivements = useSelector(
+  const achievements = useSelector(
     (state: RootState) => state.achievements.achievements
   );
   const dispatch = useDispatch();
@@ -24,13 +24,13 @@ function Navbar() {
   const gameState: GameState = {
     money,
     buildings,
-    achivements,
+    achievements,
   };
 
   const [tabIndex, setTabIndex] = useState(0);
   const [alert, setAlert] = useState(false);
 
-  achivements.forEach((achievement) => {
+  achievements.forEach((achievement) => {
     if (
       !achievement.isDiscovered &&
       achivementUnlockable(gameState, achievement)
@@ -71,7 +71,7 @@ function Navbar() {
         <Options />
       </div>
       <div className={tabIndex !== 2 ? "hidden" : ""}>
-        <AchievementsTab achivements={achivements} />
+        <AchievementsTab achivements={achievements} />
       </div>
     </div>
   );

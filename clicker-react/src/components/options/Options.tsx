@@ -17,7 +17,7 @@ function Options() {
   const buildings = useSelector(
     (state: RootState) => state.buildings.buildings
   );
-  const achivements = useSelector(
+  const achievements = useSelector(
     (state: RootState) => state.achievements.achievements
   );
 
@@ -39,7 +39,7 @@ function Options() {
           const state: GameState = {
             buildings,
             money,
-            achivements,
+            achievements,
           };
           localStorage.setItem("save", JSON.stringify(state));
         }}
@@ -54,7 +54,7 @@ function Options() {
             const state: GameState = JSON.parse(save);
             dispatch(setMoney(state.money));
             dispatch(setBuildings(state.buildings));
-            dispatch(setAchievements(state.achivements));
+            dispatch(setAchievements(state.achievements));
           }
         }}
       >
@@ -66,7 +66,7 @@ function Options() {
           const state: GameState = {
             buildings,
             money,
-            achivements,
+            achievements,
           };
           download("save.json", JSON.stringify(state));
         }}
@@ -84,7 +84,7 @@ function Options() {
             const state: GameState = JSON.parse(content);
             dispatch(setMoney(state.money));
             dispatch(setBuildings(state.buildings));
-            dispatch(setAchievements(state.achivements));
+            dispatch(setAchievements(state.achievements));
           }
         }}
       >
