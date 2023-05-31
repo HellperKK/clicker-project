@@ -11,8 +11,65 @@
   <body>
     <div id="root"></div>
     <script>
+      function openFiles(accept = [], multiple = false) {
+        return new Promise((resolve, reject) => {
+          const fileSelector = document.createElement("input");
+          fileSelector.type = "file";
+          fileSelector.multiple = multiple;
+
+          if (accept.length > 0) {
+            fileSelector.accept = accept.join(",");
+          }
+
+          fileSelector.addEventListener("change", () => {
+            if (fileSelector.files !== null) {
+              resolve(fileSelector.files);
+            } else {
+              reject(new Error("no file selected"));
+            }
+          });
+          fileSelector.click();
+        });
+      }
+      function download(fileName, text) {
+        //creating an invisible element
+        const element = document.createElement("a");
+        element.setAttribute(
+          "href",
+          "data:text/plain;charset=utf-8, " + encodeURIComponent(text)
+        );
+        element.setAttribute("download", fileName);
+        element.click();
+      }
+
       var app = Elm.Main.init({
         node: document.getElementById("root"),
+      });
+
+      app.ports.setStorage.subscribe(function (state) {
+        localStorage.setItem("save", JSON.stringify(state));
+      });
+
+      app.ports.getStorage.subscribe(function (state) {
+        let data = localStorage.getItem("save", JSON.stringify(state));
+        app.ports.getStorageApply.send(data !== null ? data : "");
+      });
+
+      app.ports.setFile.subscribe(function (state) {
+        download("save.json", JSON.stringify(state));
+      });
+
+      app.ports.getFile.subscribe(async function (state) {
+        let files = await openFiles();
+        const file = files[0];
+
+        if (file) {
+          const content = await file.text();
+          console.log(content);
+          app.ports.getFileApply.send(content);
+        } else {
+          app.ports.getFileApply.send("");
+        }
       });
     </script>
   </body>

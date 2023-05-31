@@ -1,8 +1,35 @@
 module GameElements.Buildings exposing (..)
 
 import Array exposing (Array)
+import Json.Decode as D
+import Json.Encode as E
 import Maybe
 import Utils.Array exposing (updateArray)
+
+
+encodeBuilding : Building -> E.Value
+encodeBuilding building =
+    E.object
+        [ ( "id", E.int building.id )
+        , ( "quantity", E.int building.quantity )
+        , ( "name", E.string building.name )
+        , ( "desc", E.string building.desc )
+        , ( "basePrice", E.int building.basePrice )
+        , ( "moneyGain", E.int building.moneyGain )
+        , ( "isUnlocked", E.bool building.isUnlocked )
+        ]
+
+
+decoderBuilding : D.Decoder Building
+decoderBuilding =
+    D.map7 Building
+        (D.field "id" D.int)
+        (D.field "quantity" D.int)
+        (D.field "name" D.string)
+        (D.field "desc" D.string)
+        (D.field "basePrice" D.int)
+        (D.field "moneyGain" D.int)
+        (D.field "isUnlocked" D.bool)
 
 
 type alias Building =

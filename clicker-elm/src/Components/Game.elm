@@ -20,7 +20,7 @@ buildingsToButtons model =
                         [ onClick (BuyBuilding index)
                         , disabled (toFloat (getBuildingPrice index model.buildings) > model.money)
                         , class "button max-width is-size-4"
-                        , title "building title"
+                        , title (building.desc ++ " (" ++ String.fromInt building.moneyGain ++ "/s)")
                         ]
                         [ text (building.name ++ " " ++ (getBuildingPrice index model.buildings |> toFloat |> formatNumber)) ]
                     ]

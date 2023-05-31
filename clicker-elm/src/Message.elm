@@ -8,3 +8,10 @@ type Msg
     | BuyBuilding Int
     | ChangeTab Int
     | UpdateMoney Time.Posix
+    | Reset
+    | Save
+    | Load
+    | Export
+    | Import
+    | LoadApply String
+    | ImportApply String
