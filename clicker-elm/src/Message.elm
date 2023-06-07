@@ -15,3 +15,4 @@ type Msg
     | Import
     | LoadApply String
     | ImportApply String
+    | ViewAchievements Int

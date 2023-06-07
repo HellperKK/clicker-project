@@ -1,35 +1,43 @@
 module Model exposing (..)
 
 import Array exposing (Array)
+import GameElements.Achivements exposing (Achievement, achievements, encodeAchievement)
 import GameElements.Buildings exposing (..)
 import Json.Decode as D
 import Json.Encode as E
 
 
-encodeModel : Model -> E.Value
-encodeModel model =
+encodeGameState : GameState -> E.Value
+encodeGameState model =
     E.object
-        [ ( "tabIndex", E.int model.tabIndex )
-        , ( "money", E.float model.money )
+        [ ( "money", E.float model.money )
         , ( "buildings", E.array encodeBuilding model.buildings )
+        , ( "achievements", E.array encodeAchievement model.achievements )
         ]
 
 
-decoderModel : D.Decoder Model
-decoderModel =
-    D.map3 Model
-        (D.field "tabIndex" D.int)
+decoderGameState : D.Decoder GameState
+decoderGameState =
+    D.map3 GameState
         (D.field "money" D.float)
         (D.field "buildings" (D.array decoderBuilding))
+        (D.field "achievements" (D.array GameElements.Achivements.decoderAchievement))
 
 
-decodeModel : String -> Model
-decodeModel str =
-    str |> D.decodeString decoderModel |> Result.withDefault (Model 0 0 buildings)
+decodeGameState : String -> GameState
+decodeGameState str =
+    str |> D.decodeString decoderGameState |> Result.withDefault (GameState 0 buildings achievements)
 
 
 type alias Model =
     { tabIndex : Int
-    , money : Float
+    , alert : Bool
+    , gameState : GameState
+    }
+
+
+type alias GameState =
+    { money : Float
     , buildings : Array Building
+    , achievements : Array Achievement
     }

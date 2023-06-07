@@ -12,17 +12,17 @@ import Utils.Format exposing (formatNumber)
 
 buildingsToButtons : Model -> List (Html Msg)
 buildingsToButtons model =
-    Array.filter (\building -> building.isUnlocked) model.buildings
+    Array.filter (\building -> building.isUnlocked) model.gameState.buildings
         |> Array.indexedMap
             (\index building ->
                 div []
                     [ button
                         [ onClick (BuyBuilding index)
-                        , disabled (toFloat (getBuildingPrice index model.buildings) > model.money)
+                        , disabled (toFloat (getBuildingPrice index model.gameState.buildings) > model.gameState.money)
                         , class "button max-width is-size-4"
                         , title (building.desc ++ " (" ++ String.fromInt building.moneyGain ++ "/s)")
                         ]
-                        [ text (building.name ++ " " ++ (getBuildingPrice index model.buildings |> toFloat |> formatNumber)) ]
+                        [ text (building.name ++ " (" ++ String.fromInt building.quantity ++ ") " ++ (getBuildingPrice index model.gameState.buildings |> toFloat |> formatNumber)) ]
                     ]
             )
         |> Array.toList
@@ -35,9 +35,9 @@ game model =
             [ p [ class "is-size-1" ]
                 [ text
                     ("Money : "
-                        ++ formatNumber model.money
+                        ++ formatNumber model.gameState.money
                         ++ " (+"
-                        ++ (buildingsGain model.buildings |> toFloat |> formatNumber)
+                        ++ (buildingsGain model.gameState.buildings |> toFloat |> formatNumber)
                         ++ "/s)"
                     )
                 ]

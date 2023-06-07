@@ -2,13 +2,15 @@ port module Main exposing (..)
 
 import Array exposing (Array)
 import Browser
+import Components.Achievements exposing (achievementsTab)
 import Components.Game exposing (game)
 import Components.Options exposing (options)
+import GameElements.AchievementRequirement exposing (AchievementRequirement(..))
+import GameElements.Achivements exposing (Achievement, achievements)
 import GameElements.Buildings exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
-import Json.Decode as D
 import Json.Encode as E
 import Message exposing (..)
 import Model exposing (..)
@@ -57,7 +59,7 @@ main =
 
 init : () -> ( Model, Cmd msg )
 init _ =
-    ( Model 0 0 buildings, Cmd.none )
+    ( Model 0 False (GameState 0 buildings achievements), Cmd.none )
 
 
 
@@ -66,36 +68,94 @@ init _ =
 
 updateMoney : Model -> Float
 updateMoney model =
-    model.money + (buildingsGain model.buildings |> toFloat |> (\x -> x / 10))
+    model.gameState.money + (buildingsGain model.gameState.buildings |> toFloat |> (\x -> x / 10))
 
 
 unlockBuildings : Model -> Array Building
 unlockBuildings model =
     Array.map
         (\building ->
-            if (toFloat building.basePrice * 0.5) <= model.money then
+            if (toFloat building.basePrice * 0.5) <= model.gameState.money then
                 { building | isUnlocked = True }
 
             else
                 building
         )
-        model.buildings
+        model.gameState.buildings
+
+
+evalAchievement : GameState -> AchievementRequirement -> Bool
+evalAchievement state requirement =
+    case requirement of
+        AchievementBuildingQuantity buildingQuantity ->
+            Array.get buildingQuantity.buildingId state.buildings
+                |> Maybe.map (\building -> building.quantity >= buildingQuantity.quantity)
+                |> Maybe.withDefault False
+
+
+updateAchievements : Model -> ( Bool, Array Achievement )
+updateAchievements model =
+    let
+        hasUnlocked =
+            model.gameState.achievements
+                |> Array.toList
+                |> List.any (\achievement -> not achievement.isDiscovered && evalAchievement model.gameState achievement.condition)
+
+        newAchivement =
+            if hasUnlocked then
+                Array.map
+                    (\achievement ->
+                        { achievement | isDiscovered = evalAchievement model.gameState achievement.condition }
+                    )
+                    model.gameState.achievements
+
+            else
+                model.gameState.achievements
+    in
+    ( hasUnlocked, newAchivement )
 
 
 update : Msg -> Model -> ( Model, Cmd msg )
 update msg model =
     case msg of
         UpdateMoney _ ->
-            ( { model | money = updateMoney model, buildings = unlockBuildings model }, Cmd.none )
+            let
+                ( achievementUpdated, newAchievement ) =
+                    updateAchievements model
+            in
+            ( { model
+                | gameState =
+                    { money = updateMoney model
+                    , buildings = unlockBuildings model
+                    , achievements = newAchievement
+                    }
+                , alert = model.alert || achievementUpdated
+              }
+            , Cmd.none
+            )
 
-        ChangeTab i ->
-            ( { model | tabIndex = i }, Cmd.none )
+        ChangeTab index ->
+            ( { model | tabIndex = index }, Cmd.none )
 
         ChangeMoney amount ->
-            ( { model | money = model.money + amount }, Cmd.none )
+            ( { model
+                | gameState =
+                    { money = model.gameState.money + amount
+                    , buildings = model.gameState.buildings
+                    , achievements = model.gameState.achievements
+                    }
+              }
+            , Cmd.none
+            )
 
         BuyBuilding index ->
-            ( { model | buildings = buyBuilding index model.buildings, money = model.money - toFloat (getBuildingPrice index model.buildings) }
+            ( { model
+                | gameState =
+                    { buildings = buyBuilding index model.gameState.buildings
+                    , money = model.gameState.money - toFloat (getBuildingPrice index model.gameState.buildings)
+                    , achievements = model.gameState.achievements
+                    }
+              }
             , Cmd.none
             )
 
@@ -107,22 +167,25 @@ update msg model =
             ( { mod | tabIndex = model.tabIndex }, cmd )
 
         Save ->
-            ( model, Cmd.batch [ setStorage (encodeModel model), Cmd.none ] )
+            ( model, Cmd.batch [ setStorage (encodeGameState model.gameState), Cmd.none ] )
 
         Load ->
             ( model, Cmd.batch [ getStorage (), Cmd.none ] )
 
         LoadApply str ->
-            ( decodeModel str, Cmd.none )
+            ( { model | gameState = decodeGameState str }, Cmd.none )
 
         Export ->
-            ( model, Cmd.batch [ setFile (encodeModel model), Cmd.none ] )
+            ( model, Cmd.batch [ setFile (encodeGameState model.gameState), Cmd.none ] )
 
         Import ->
             ( model, Cmd.batch [ getFile (), Cmd.none ] )
 
         ImportApply str ->
-            ( decodeModel str, Cmd.none )
+            ( { model | gameState = decodeGameState str }, Cmd.none )
+
+        ViewAchievements index ->
+            ( { model | alert = False, tabIndex = index }, Cmd.none )
 
 
 
@@ -172,7 +235,15 @@ view model =
                             ""
                         )
                     ]
-                    [ a [ onClick (ChangeTab 2) ] [ text "Achievements" ] ]
+                    [ a [ onClick (ViewAchievements 2) ]
+                        [ text "Achievements"
+                        , if model.alert then
+                            span [ class "has-text-info" ] [ text "NEW!" ]
+
+                          else
+                            span [ class "has-text-info" ] [ text "" ]
+                        ]
+                    ]
                 ]
             ]
         , div
@@ -204,5 +275,5 @@ view model =
                     ""
                 )
             ]
-            [ text "2" ]
+            [ achievementsTab model ]
         ]
