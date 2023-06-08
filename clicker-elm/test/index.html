@@ -71,6 +71,18 @@
           app.ports.getFileApply.send("");
         }
       });
+
+      let date = new Date();
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          date = new Date();
+        } else {
+          const nowDate = new Date();
+          const delay = nowDate.getTime() - date.getTime();
+          app.ports.getTimeUpdate.send(Math.floor(delay / 1000));
+        }
+      });
     </script>
   </body>
 </html>

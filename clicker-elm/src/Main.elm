@@ -36,6 +36,9 @@ port setFile : E.Value -> Cmd msg
 port getFile : () -> Cmd msg
 
 
+port getTimeUpdate : (Float -> msg) -> Sub msg
+
+
 port getFileApply : (String -> msg) -> Sub msg
 
 
@@ -69,6 +72,11 @@ init _ =
 updateMoney : Model -> Float
 updateMoney model =
     model.gameState.money + (buildingsGain model.gameState.buildings |> toFloat |> (\x -> x / 10))
+
+
+updateMoneyDelay : Model -> Float -> Float
+updateMoneyDelay model delay =
+    model.gameState.money + (buildingsGain model.gameState.buildings |> toFloat |> (\x -> x)) * delay
 
 
 unlockBuildings : Model -> Array Building
@@ -187,6 +195,17 @@ update msg model =
         ViewAchievements index ->
             ( { model | alert = False, tabIndex = index }, Cmd.none )
 
+        GetTimeUpdate delay ->
+            ( { model
+                | gameState =
+                    { buildings = model.gameState.buildings
+                    , money = updateMoneyDelay model delay
+                    , achievements = model.gameState.achievements
+                    }
+              }
+            , Cmd.none
+            )
+
 
 
 -- SUBSCRIPTIONS
@@ -194,7 +213,7 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-    Sub.batch [ Time.every 100 UpdateMoney, getStorageApply LoadApply, getFileApply ImportApply ]
+    Sub.batch [ Time.every 100 UpdateMoney, getStorageApply LoadApply, getFileApply ImportApply, getTimeUpdate GetTimeUpdate ]
 
 
 

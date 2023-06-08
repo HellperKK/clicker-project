@@ -16,3 +16,4 @@ type Msg
     | LoadApply String
     | ImportApply String
     | ViewAchievements Int
+    | GetTimeUpdate Float
