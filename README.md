@@ -2,9 +2,15 @@
 
 ## objective
 
-This project's objective is to build a web app in react and then build two copies of that app, one made with vuejs and one made with angular. That way I can see the differences between each tool. I chose to make a clicker game as I felt it could be a nice ways to do that exercice.
+This project's objective is to build a web app in react and then build many copies of that app using other frameworks. That way I can see the differences between each framework and hopefuly see their pros and cons. I chose to make a clicker game as I felt it could be a nice ways to do that exercice.
 
-Obviously I'm not an expert of the three frameworks so feel free to open an issue if you have some suggestions to make!
+Currently there are 4 clickers being developped:
+- typescript/react
+- typescript/vuejs
+- typescript/angular
+- elm/elm-architecture
+
+Obviously I'm not an expert of all those frameworks so feel free to open an issue if you have some suggestions to make!
 
 You can try the game [here](https://hellperkk.github.io/clicker-project/)
 
