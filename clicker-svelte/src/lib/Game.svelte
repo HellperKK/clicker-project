@@ -17,7 +17,6 @@
   <div class="column is-one-third has-text-centered">
     <p class="is-size-1">
       Money : {display.format(money)} (+{buildingsGain(buildings)}/s)
-      <!--{{ formatNumber(buildingsGain(store.getBuildings)) }}/s)-->
     </p>
     <button
       class="transparent-button"
