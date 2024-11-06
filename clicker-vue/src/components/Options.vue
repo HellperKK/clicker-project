@@ -34,7 +34,6 @@ function load() {
     buildingsStore.setBuildings(state.buildings);
     achivementsStore.setAchivements(state.achievements);
   }
-
 }
 
 function exportSave() {
@@ -57,7 +56,6 @@ async function importSave() {
     buildingsStore.setBuildings(state.buildings);
     achivementsStore.setAchivements(state.achievements);
   }
-
 }
 </script>
 
